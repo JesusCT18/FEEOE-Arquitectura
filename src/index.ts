@@ -4,26 +4,25 @@ import client from "prom-client"; // Importamos la librería de métricas
 const app = express();
 const PORT = process.env.PORT || 3000; // Usamos el puerto de Render o el 3000
 
-// --- CONFIGURACIÓN DE MÉTRICAS ---
+// CONFIGURACIÓN DE MÉTRICAS
 const collectDefaultMetrics = client.collectDefaultMetrics;
 collectDefaultMetrics({ register: client.register });
 
-// Tu middleware de log que ya tenías
+// Logs
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
-// --- NUEVA RUTA PARA GRAFANA ---
-// Grafana entrará aquí para leer el uso de CPU y RAM
+//  NUEVA RUTA PARA GRAFANA 
 app.get("/metrics", async (req, res) => {
   res.set("Content-Type", client.register.contentType);
   res.end(await client.register.metrics());
 });
 
-// Tu ruta principal
+// Ruta principal
 app.get("/", (req, res) => {
-  res.send("App funcionando 🚀 - Kryos está vigilando el rendimiento");
+  res.send("App funcionando");
 });
 
 app.listen(PORT, () => {
